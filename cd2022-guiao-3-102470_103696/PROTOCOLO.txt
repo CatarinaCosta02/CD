@@ -1,0 +1,22 @@
+PROTOCOLO
+O protocolo utilizado (PubSub) entre os consumidores, os produtores e o broker tem por base a troca de mensagens tipo XML, JSON, PICKLE, precedidos do tamanho do documento que lhe segue.
+A primeira mensagem trocada é codificada em 'utf-8', onde surgem os dois primeiros bytes codificados em big endian com a informação do tamanho da mensagem.
+
+
+Mensagem enviada quando um consumidor se pretende subscrever a um tema:
+{"command": "Subscribe", "topic": topic}
+
+Mensagem enviada quando um consumidor pretende deixar de estar subscrito a um tema:
+{"command": "Unsubscribe", "topic": topic}
+
+Mensagem enviada quando um consumidor pretende obter a lista de topicos ja existentes:
+{"command": "List"}
+RESPOSTA: Mensagem enviada quando o broker pretende enviar uma lista dos topicos ja existentes
+{"command": "List", "data": data}
+
+Mensagem enviada quando um produtor pretende enviar uma mensagem para determinado topico:
+{"command": "Push", "topic": self.topic, "data": value}
+
+Mensagem enviada quando o broker pretende enviar uma mensagem para um consumidor:
+{"command": "Publish", "topic": decodeddata["topic"], "data": decodeddata["data"]}
+
